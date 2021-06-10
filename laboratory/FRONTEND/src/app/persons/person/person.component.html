@@ -1,0 +1,86 @@
+<div class="container">
+  <mat-card class="listado">
+    <mat-list>
+      <mat-list-item *ngFor="let newperson of peopleService.personArray" (click)="editPerson(newperson)">
+        <mat-icon matListIcon>folder</mat-icon>
+        {{newperson.Nombre}} {{newperson.Apellidos}} - {{newperson.Edad}} - {{newperson.DNI}} - {{newperson.Cumpleanos | date:"dd-MM-yyyy"}} - {{newperson.ColorFavorito}} - {{newperson.Sexo}}
+      </mat-list-item>  
+    </mat-list>
+  </mat-card>
+</div>
+
+<div class="container">
+  <mat-card class="form">
+    <mat-card-title> 
+      <h3> {{ selectedPerson.id == 0 ? "Inserta una nueva persona":"Actualizar una persona"}}</h3>
+    </mat-card-title>
+    <mat-card-content>
+      <form #personForm="ngForm" (ngSubmit)="addPerson(personForm)">
+        <table>
+          <tr>
+            <td>
+              <input type="hidden" name="_id" #_id="ngModel" [(ngModel)]="peopleService.selectedPerson._id">
+              <mat-form-field class="form-group">
+                <input matInput type="text" name="Nombre" #Nombre = "ngModel" [(ngModel)]="peopleService.selectedPerson.Nombre" placeholder="Nombre" class="form-control">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field>
+                <input matInput type="text" name="Apellidos" #Apellidos = "ngModel" [(ngModel)]="peopleService.selectedPerson.Apellidos" placeholder="Apellidos" class="form-control">
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <mat-form-field>
+                <input matInput type="text" name="Edad" #Edad = "ngModel" [(ngModel)]="peopleService.selectedPerson.Edad" placeholder="Edad" class="form-control">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field>
+                <input matInput type="text" name="DNI" #DNI= "ngModel" [(ngModel)]="peopleService.selectedPerson.DNI" placeholder="NIF (8 números y 1 letra)" pattern="[0-9]{8}[A-Za-z]{1}" class="form-control">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field>
+                <input matInput [matDatepicker]="picker" name="Cumpleanos" #Cumpleanos = "ngModel" [(ngModel)]="peopleService.selectedPerson.Cumpleanos" placeholder="Cumpleaños" class="form-control">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </td>
+          </tr>  
+          <tr>
+            <td>
+              <span>Sexo</span><br><br>
+              <mat-radio-group name="Sexo" #Sexo = "ngModel" [(ngModel)]="peopleService.selectedPerson.Sexo" class="form-control">
+                <mat-radio-button value="Hombre">Hombre</mat-radio-button>    
+                <mat-radio-button value="Mujer">Mujer</mat-radio-button>
+                <mat-radio-button value="Otro">Otro</mat-radio-button>    
+                <mat-radio-button value="No especificado">No especificado</mat-radio-button>
+              </mat-radio-group>
+            </td>
+            <td>
+              <mat-form-field>
+                <mat-label>Color favorito</mat-label>
+                <mat-select placeholder="Color favorito" name="ColorFavorito" #ColorFavorito = "ngModel" [(ngModel)]="peopleService.selectedPerson.ColorFavorito" class="form-control">    
+                  <mat-option value="Rojo">Rojo</mat-option>    
+                  <mat-option value="Azul">Azul</mat-option> 
+                  <mat-option value="Amarillo">Amarillo</mat-option>    
+                  <mat-option value="Verde">Verde</mat-option>    
+                  <mat-option value="Blanco">Blanco</mat-option> 
+                  <mat-option value="Negro">Negro</mat-option>     
+                </mat-select>
+              </mat-form-field>
+            </td>
+          </tr>     
+        </table>
+      </form>
+    </mat-card-content>
+    <mat-card-actions>
+      <div class="button">
+        <button (click)="addPerson(personForm)" color="primary">submit</button>
+        <button *ngIf="peopleService.selectedPerson.id !==0" color="primary" (click)="deletePerson(peopleService.selectedPerson._id,personForm)">delete</button>
+      </div>
+    </mat-card-actions>      
+  </mat-card>
+</div>
